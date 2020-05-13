@@ -2,6 +2,8 @@ const express = require("express");
 const routes = require("./routes");
 const path = require("path");
 const bodyParser = require("body-parser");
+const expressValidator = require("express-validator");
+const helpers = require("./helpers");
 
 //DB
 const db = require("./config/db");
@@ -20,10 +22,16 @@ app.use(express.static("public"));
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "./views"));
 
+//Vardump
+app.use((req, res, next) => {
+  res.locals.vardump = helpers.vardump;
+  next();
+});
+
 //BodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//Rutas<
+//Rutas
 app.use("/", routes());
 
 //Port
